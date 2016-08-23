@@ -1,0 +1,13 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(int argc, char* argv){
+	int i=1;
+	char* c;
+	c = (char*)&i;
+	if(*c)
+		cout<<"Little Endian";
+	else 
+		cout<<"Big Endian";
+	return 0;
+

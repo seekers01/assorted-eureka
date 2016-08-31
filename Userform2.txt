@@ -1,0 +1,77 @@
+Private Sub cmdLoad_Click()
+    If ComboBox1.Text = "Select a Chart" Then
+    
+    'MsgBox "Select a chart from the dropdown list"
+    Exit Sub
+    
+    End If
+    Dim MyChart As Chart
+    Dim ChartData As Range
+    Dim chartIndex As Integer
+    Dim ChartName As String
+    Dim Chart As ChartObject
+
+    Dim i As Integer
+    
+    chartIndex = ComboBox1.ListIndex + 1
+    i = chartIndex
+    Application.ScreenUpdating = False
+    Set MyChart = ActiveSheet.Shapes.AddChart2(332, xlLineMarkers).Chart
+    MyChart.SetSourceData Source:=Worksheets("HHS appliances  Time of use S").Range(chartIndex & ":" & chartIndex)
+       ' MyChart.SetElement (msoElementPrimaryCategoryAxisTitleAdjacentToAxis)
+    'MyChart.SetElement (msoElementPrimaryValueAxisTitleAdjacentToAxis)
+    MyChart.ClearToMatchStyle
+    MyChart.ChartStyle = 228
+    MyChart.FullSeriesCollection(1).XValues = _
+        "='HHS appliances  Time of use S'!$1:$1"
+        'ActiveSheet.Shapes(1).IncrementLeft 313.928503937
+        MyChart.Axes(xlCategory).HasMajorGridlines = True
+        
+        ActiveSheet.ChartObjects(1).Height = Application.CentimetersToPoints(15)
+        ActiveSheet.ChartObjects(1).Width = Application.CentimetersToPoints(30)
+   
+    'MyChart.SeriesCollection.NewSeries
+    'MyChart.SeriesCollection(1).Name = ChartName
+    'MyChart.SeriesCollection(1).Values = ChartData
+    'MyChart.SeriesCollection(1).XValues = ActiveSheet.Range("A2:A20")
+    MyChart.Paste
+    Dim imageName As String
+   
+
+
+    imageName = Application.DefaultFilePath & Application.PathSeparator & "TempChart.gif"
+    MyChart.Export Filename:=imageName, FilterName:="GIF"
+    ActiveSheet.ChartObjects(1).Delete
+    
+    Application.ScreenUpdating = True
+    
+    
+    UserForm2.Image1.Picture = LoadPicture(imageName)
+    
+End Sub
+
+
+Private Sub Image1_Click()
+
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub
+
+Private Sub UserForm_Initialize()
+            Dim lRow1 As Long
+    Dim i1 As Integer
+    
+    'MsgBox ("Please wait while the application initializes.")
+    lRow1 = Worksheets("HHS appliances  Time of use S").Cells(Rows.Count, 1).End(xlUp).row
+    'lCol1 = Worksheets("House Details").Cells(1, Columns.Count).End(xlToLeft).Column
+    
+    ComboBox1.Clear
+    For i1 = 1 To (lRow1 - 1) Step 1
+        With ComboBox1
+        .AddItem ("House " & i1)
+        End With
+    Next
+End Sub
+
